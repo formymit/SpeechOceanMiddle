@@ -60,7 +60,7 @@ def process_crawler():
     process= []
     # num_cpus = multiprocessing.cpu_count()
     # print('将启动进程数为: ', num_cpus)
-    for i in range(40):
+    for i in range(50):
         p = multiprocessing.Process(target=infoCrawler)
         p.start()
         process.append(p)
@@ -68,6 +68,6 @@ def process_crawler():
         p.join()
 
 if __name__ == '__main__':
-    # process_crawler()
-    getData('http://www.caak.mn/?page=1600')
+    process_crawler()
+    # getData('http://www.caak.mn/?page=1600')
 
