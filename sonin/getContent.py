@@ -54,14 +54,16 @@ def getData(url):
         print(time)
 
 
-        all_text = selector.xpath('//div[@id="text-show"]//br/following-sibling::text()')
+        # all_text = selector.xpath('//div[@id="text-show"]//br/following-sibling::text()')
+        all_text = selector.xpath('//div[@id="text-show"]//p')
         if len(all_text) == 0: #判断方法待检验
-            all_text = selector.xpath('//div[@id="text-show"]/div')
+            all_text = selector.xpath('//div[@id="text-show"]/div[@style="text-align: justify;"]')
         sumContent = ''
         for i in range(len(all_text)):
-            text = all_text[i]
+            text = all_text[i].xpath('string(.)')
             text = '<p>' + text + '</p>'
-            text = text.replace('\\n', '')
+            text = text.replace('\^M', '')
+            text = ' '.join(text.split())
             text =text.replace('\\t', '')
             text = text.replace('\', \'', '')
 
@@ -69,14 +71,15 @@ def getData(url):
             print(text)
 
 
-        all_reviews = selector.xpath('//p[@class="comment-show"]')
+        all_reviews = selector.xpath('//p[@class="comment-show"]') # 挽救第一句 br不处理 直接p
         if len(all_reviews) == 0:
-            all_reviews = selector.xpat('//div[@class="socialtabinformation"]//p')
+            all_reviews = selector.xpath('//div[@class="socialtabinformation"]//p')
         sumReview = ''
         for i in range(len(all_reviews)):
             review = all_reviews[i].xpath('string(.)')
             review = '<p>' + review + '</p>'
             #多余空格处理等
+            review = ' '.join(review.split())
             sumReview = sumReview + review
 
         result = '{' + '"title": ' + '"' + title + '", ' + '"url": ' + '"' + url + '", ' + '"review": ' + '"' + sumReview + '", ' + '"content": ' + '"' + sumContent + '", ' + '"time": ' + '"' + time + '", ' + '"type": ' + '"news"' + '}'
@@ -93,7 +96,7 @@ def process_crawler():
     process= []
     # num_cpus = multiprocessing.cpu_count()
     # print('将启动进程数为: ', num_cpus)
-    for i in range(50):
+    for i in range(10):
         p = multiprocessing.Process(target=infoCrawler)
         p.start()
         process.append(p)
@@ -101,5 +104,5 @@ def process_crawler():
         p.join()
 
 if __name__ == '__main__':
-    # process_crawler()
-    getData(url)
+    process_crawler()
+    # getData(url)
