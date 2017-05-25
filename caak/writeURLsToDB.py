@@ -7,10 +7,10 @@
 """
 from mongodb_queue import MongoQueue
 
-spider_queue = MongoQueue('mongolia', 'caak01')
+spider_queue = MongoQueue('mongolia', 'caak02')
 #
 for i in range(1, 1600):
-    url = '3. http://www.caak.mn/?page=' + str(i)
+    url = 'http://www.caak.mn/?page=' + str(i)
 
     spider_queue.push(url)
 
