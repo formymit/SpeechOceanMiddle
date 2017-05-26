@@ -67,18 +67,18 @@ def getData(url):
             text = text.replace('\', \'', '')
 
             sumContent = sumContent + text
-            print(text)
-
-        if len(sumContent) == 0: #判断方法待检验
-            all_text = selector.xpath('//div[@id="text-show"]/div[@style="text-align: justify;"]')
-            for i in range(len(all_text)):
+        if (len(sumContent)) == 0: #判断方法待检验
+            all_text = selector.xpath('//div[@id="text-show"]/div')
+            for i in range(len(all_text)-1):
                 text = all_text[i].xpath('string(.)')
                 text = '<p>' + text + '</p>'
                 text = text.replace('\^M', '')
                 text = ' '.join(text.split())
                 text = text.replace('\\t', '')
                 text = text.replace('\', \'', '')
+
                 sumContent = sumContent + text
+
 
         all_reviews = selector.xpath('//p[@class="comment-show"]') # 挽救第一句 br不处理 直接p
         if len(all_reviews) == 0:
@@ -113,5 +113,5 @@ def process_crawler():
         p.join()
 
 if __name__ == '__main__':
-    process_crawler()
-    # getData(url)
+    # process_crawler()
+    getData('http://www.sonin.mn/news/politics-economy/67258')
