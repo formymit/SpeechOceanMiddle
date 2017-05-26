@@ -56,8 +56,7 @@ def getData(url):
 
         # all_text = selector.xpath('//div[@id="text-show"]//br/following-sibling::text()')
         all_text = selector.xpath('//div[@id="text-show"]//p')
-        if len(all_text) == 0: #判断方法待检验
-            all_text = selector.xpath('//div[@id="text-show"]/div[@style="text-align: justify;"]')
+
         sumContent = ''
         for i in range(len(all_text)):
             text = all_text[i].xpath('string(.)')
@@ -70,6 +69,16 @@ def getData(url):
             sumContent = sumContent + text
             print(text)
 
+        if len(sumContent) == 0: #判断方法待检验
+            all_text = selector.xpath('//div[@id="text-show"]/div[@style="text-align: justify;"]')
+            for i in range(len(all_text)):
+                text = all_text[i].xpath('string(.)')
+                text = '<p>' + text + '</p>'
+                text = text.replace('\^M', '')
+                text = ' '.join(text.split())
+                text = text.replace('\\t', '')
+                text = text.replace('\', \'', '')
+                sumContent = sumContent + text
 
         all_reviews = selector.xpath('//p[@class="comment-show"]') # 挽救第一句 br不处理 直接p
         if len(all_reviews) == 0:
